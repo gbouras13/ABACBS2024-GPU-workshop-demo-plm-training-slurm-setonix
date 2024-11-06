@@ -20,5 +20,5 @@ export SINGULARITY_CONTAINER="/scratch/pawsey1018/gbouras/gpu_demo/ABACBS2024-GP
 
 # Run Singularity container
 singularity exec --cleanenv  "$SINGULARITY_CONTAINER" \
-	python train_esm.py --train_hdf5_file train.h5  --eval_hdf5_file val.h5 -o esm650m_train \
+	python train_esm.py --train_hdf5_file train.h5  --eval_hdf5_file val.h5 -o esm650m_train_single_gpu \
         --epochs 1 --batch_size 24 -t 8 --steps 258  --eval_steps 50
