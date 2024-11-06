@@ -26,7 +26,7 @@ RUN (if [ -e /tmp/build ]; then rm -rf /tmp/build; fi;) \
       && make install
 
 #
-# Install miniforge
+# Install base miniforge
 #
 
 RUN set -eux ; \
@@ -36,10 +36,9 @@ RUN set -eux ; \
 ENV PATH /opt/miniforge3/bin:$PATH
 RUN conda clean -af -y
 
-
+RUN pip install transformers biopython loguru pandas h5py numpy --no-cache-dir
 RUN pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm6.1 --no-cache-dir
 RUN pip install pytorch-triton-rocm --no-cache-dir
-RUN pip install transformers biopython loguru pandas h5py numpy --no-cache-dir
 
 RUN python3 -c "import torch; print(torch.__version__)" || echo "PyTorch is not installed before installing the project. "
 

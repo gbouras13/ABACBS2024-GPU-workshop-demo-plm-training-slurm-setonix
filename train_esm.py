@@ -112,6 +112,8 @@ def mask_tokens(input_ids, mask_token_id, mlm_probability=0.15, pad_token_id=1, 
 
 def save_checkpoint(model, optimizer, scheduler, scaler, epoch, step, checkpoint_dir, final_checkpoint=False, ddp=True):
 
+    logger.info(f"Saving checkpoint at epoch: {epoch} step: {step}")
+
     if final_checkpoint:
         logger.info(f"Saving final checkpoint")
         checkpoint_path = os.path.join(checkpoint_dir, f"checkpoint_epoch_{epoch}_step_{step}.pth")
@@ -268,7 +270,7 @@ class ProteinDataset(Dataset):
 
 
 #
-# Training configuration - smooths the learning rate of the model
+# Training configuration - smoothes the learning rate of the model
 # 
 def cosine_lr_scheduler(optimizer, num_warmup_steps, num_training_steps, min_lr_ratio=0.1, last_epoch=-1):
     def lr_lambda(current_step: int):
@@ -286,6 +288,8 @@ def train_esm2(hdf5_file, eval_hdf5_file, out_dir, model_name="facebook/esm2_t33
     # make output dir
     Path(out_dir).mkdir(exist_ok=True)
     torch.set_num_threads(threads)
+
+    logger.info(f"ESM2 training is beginning - have fun :)")
 
     # setup
 
@@ -333,7 +337,7 @@ def train_esm2(hdf5_file, eval_hdf5_file, out_dir, model_name="facebook/esm2_t33
         model = DistributedDataParallel(model, device_ids=[local_rank], find_unused_parameters=True)
 
     # scale with sqrt world size as #https://stackoverflow.com/questions/71962572/on-batch-size-epochs-and-learning-rate-of-distributeddataparallel
-    learning_rate = 3e-4 * math.sqrt(world_size)
+    learning_rate = 3e-4 / math.sqrt(world_size)
     logger.info(f"Scaled learning rate: {learning_rate}")
 
     optimizer = optim.AdamW(model.parameters(), lr=learning_rate, betas=(0.9, 0.95), weight_decay=0.1)
@@ -456,9 +460,9 @@ def train_esm2(hdf5_file, eval_hdf5_file, out_dir, model_name="facebook/esm2_t33
             epoch_loss += loss.item()
 
             # Log loss every 50 steps
-            if step % 50 == 0:
+            if step % 5 == 0:
                 if step != 0:
-                    avg_loss = running_loss / 50
+                    avg_loss = running_loss / 5
                 else:
                     avg_loss = running_loss 
 
