@@ -1,6 +1,6 @@
 # ABACBS 2024 GPU Workshop - Demo PLM Finetuning
 
-* This repository contains some demonstration code on how one could finetune the ESM-2 650M protein language model using single GPUs, a single GPU node and multiple GPUs (in a pretty hacky manner :) ) . It was designed for the "GPUs in Bioinformatics" Workshop at the ABACBS 2024 conference in Sydney, Australia. 
+* This repository contains some demonstration code on how one could finetune the ESM-2 650M protein language model using single GPUs, a single GPU node and multiple GPU nodes (in a pretty hacky manner :) ) . It was designed for the "GPUs in Bioinformatics" Workshop at the ABACBS 2024 conference in Sydney, Australia. 
 
 ## Installation
 
@@ -35,11 +35,9 @@ python convert_fasta_to_hdf5.py -f eval.fasta --hdf5_file eval.h5
 
 #### Single GPU
 
-* Change `--epochs` `--batch_size` `--steps`  `--eval_steps`
-
 ```
 python train_esm.py --train_hdf5_file train.h5  --eval_hdf5_file val.h5 -o esm650m_train_single_gpu \
-        --epochs 1 --batch_size 24 -t 8 --steps 258  --eval_steps 50
+        --epochs 1 --batch_size 24 -t 8 --steps 258  --eval_steps 20
 ```
 
 #### Multiple GPUs (1 or more nodes)
