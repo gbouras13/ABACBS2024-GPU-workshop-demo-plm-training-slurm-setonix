@@ -1,6 +1,6 @@
 # ABACBS 2024 GPU Workshop - Demo PLM Finetuning
 
-* This repository contains some demonstration code on how one could finetune the ESM-2 650M protein language model using single GPUs, a single GPU node and multiple GPUs. It was designed for the GPU Workshop at the  ABACBS 2024 conference in Sydney, Australia. 
+* This repository contains some demonstration code on how one could finetune the ESM-2 650M protein language model using single GPUs, a single GPU node and multiple GPUs (in a pretty hacky manner :) ) . It was designed for the "GPUs in Bioinformatics" Workshop at the ABACBS 2024 conference in Sydney, Australia. 
 
 ## Installation
 
@@ -63,7 +63,7 @@ echo "Rendezvous Node IP: $RDZV_HOST"
         --rdzv_id=$SLURM_JOB_ID \
         --rdzv_backend=c10d \
         --rdzv_endpoint=$RDZV_HOST:$RDZV_PORT \
-	train_esm.py --train_hdf5_file train.h5  --eval_hdf5_file val.h5 -o esm650m_train_single_node  --epochs 1 --batch_size 24 -t 8 --steps 100  --eval_steps 20 --ddp
+	train_esm.py --train_hdf5_file train.h5  --eval_hdf5_file val.h5 -o esm650m_train_single_node  --epochs 1 --batch_size 24 -t 8 --steps 33  --eval_steps 20 --ddp
 
 ```
 
